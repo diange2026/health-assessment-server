@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: health-assessment-api
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    disk:
+      name: sqlite-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DB_DIR
+        value: /data
+      - key: JWT_SECRET
+        value: G3m8Wx085e0Sl8QpYE1Ng94XL3xwhpgd3QvFYw-QzvcmMtXX568gl_gDlszBF49_
+      - key: PORT
+        value: "3000"

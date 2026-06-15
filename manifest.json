@@ -1,0 +1,23 @@
+{
+  "name": "身心健康评估",
+  "short_name": "健康评估",
+  "description": "离线身心健康自评工具，评估身体、心理、生活三维度健康指数",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F0FDF4",
+  "theme_color": "#0891B2",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any monochrome"
+    }
+  ],
+  "categories": ["health", "lifestyle"],
+  "screenshots": [],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}
