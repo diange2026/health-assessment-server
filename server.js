@@ -50,6 +50,32 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (e) { res.status(500).json({ error: '服务器错误' }); }
 });
 
+// 微信登录：用 code 换 JWT
+app.post('/api/auth/wechat', async (req, res) => {
+  try {
+    const { code } = req.body || {};
+    if (!code) return res.status(400).json({ error: '授权码缺失' });
+    const result = await auth.wechatLogin(code);
+    if (result.error) return res.status(400).json({ error: result.error });
+    res.json(result);
+  } catch (e) {
+    console.error('微信登录错误:', e.message, e.stack);
+    res.status(500).json({ error: '微信登录失败，请重试' });
+  }
+});
+
+// 返回微信 OAuth 配置（前端用，不暴露 secret）
+app.get('/api/auth/wechat/config', (req, res) => {
+  const appId = process.env.WECHAT_APPID || '';
+  if (!appId) return res.status(500).json({ error: '微信登录未配置' });
+  res.json({
+    appId,
+    scope: 'snsapi_userinfo',
+    // 前端回调地址（微信授权后跳转的页面）
+    redirectUri: process.env.WECHAT_REDIRECT_URI || (req.protocol + '://' + req.get('host') + '/wechat-callback.html')
+  });
+});
+
 app.post('/api/auth/refresh', authMiddleware, (req, res) => {
   res.json(auth.refreshToken(req.userId, req.username));
 });

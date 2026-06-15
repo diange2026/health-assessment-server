@@ -73,6 +73,22 @@ async function getDb() {
   db.run('CREATE INDEX IF NOT EXISTS idx_behavior_user ON behavior_logs(user_id)');
   db.run('CREATE INDEX IF NOT EXISTS idx_behavior_action ON behavior_logs(user_id, action)');
 
+  // Migration: add WeChat fields + avatar to users table
+  const userCols = db.exec("PRAGMA table_info(users)")[0].values.map(r => r[1]);
+  if (!userCols.includes('wechat_openid')) {
+    db.run('ALTER TABLE users ADD COLUMN wechat_openid TEXT');
+    db.run('CREATE INDEX IF NOT EXISTS idx_users_wechat ON users(wechat_openid)');
+  }
+  if (!userCols.includes('wechat_unionid')) {
+    db.run('ALTER TABLE users ADD COLUMN wechat_unionid TEXT');
+  }
+  if (!userCols.includes('avatar')) {
+    db.run('ALTER TABLE users ADD COLUMN avatar TEXT');
+  }
+  if (!userCols.includes('provider')) {
+    db.run("ALTER TABLE users ADD COLUMN provider TEXT DEFAULT 'password'");
+  }
+
   saveDb();
   return db;
 }
