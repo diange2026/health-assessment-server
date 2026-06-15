@@ -7,7 +7,16 @@ services:
     buildCommand: npm install
     startCommand: node server.js
     envVars:
+      - key: DB_DIR
+        value: /data
       - key: JWT_SECRET
         value: G3m8Wx085e0Sl8QpYE1Ng94XL3xwhpgd3QvFYw-QzvcmMtXX568gl_gDlszBF49_
       - key: PORT
         value: "3000"
+      # 微信登录配置（可选，在 Render 环境变量面板中设置）
+      # - key: WECHAT_APPID
+      #   value: 你的微信AppID
+      # - key: WECHAT_SECRET
+      #   value: 你的微信AppSecret
+      # - key: WECHAT_REDIRECT_URI
+      #   value: https://你的PWA地址/?wechat_callback=1
